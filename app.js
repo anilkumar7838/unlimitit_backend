@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const dotenv = require('dotenv');
-
+const path=require('path');
 const app=express();
 
 //config
@@ -26,6 +26,11 @@ app.use('/api/v1',productRoute);
 app.use('/api/v1',userRoute);
 app.use('/api/v1',orderRoute);
 app.use('/api/v1',paymentRoute);
+
+// app.use(express.static(path.join(__dirname,"../frontend/build")));
+// app.get("*",(req,res)=>{
+//     res.sendFile(path.resolve(__dirname,"../frontend/build/index.html"))
+// });
 
 // Midddleware for error
 app.use(errorMiddleware);

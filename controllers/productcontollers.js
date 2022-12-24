@@ -9,14 +9,16 @@ const cloudinary = require("cloudinary");
 exports.getAllProducts =catchAsyncErrors(async (req,res,next)=>{
     const resultPerPage=8;
     // for Dashboard
-    const productCount = await Product.countDocuments();
     
-    const apiFeature = new Apifeatures(Product.find(),req.query)
+    const docCount = new Apifeatures(Product.find(),req.query)
     .search()
+    .filter()
+    const productCount = await Product.countDocuments(docCount.query);
+    const apiFeature = new Apifeatures(Product.find(),req.query)
     .filter()
     .pagination(resultPerPage)
     let products = await apiFeature.query;
-    let filterProductCount = products.length;    
+    let filterProductCount = products.length;   
     
     res.status(200).json({
         success:true,
@@ -161,7 +163,7 @@ exports.createProduct = catchAsyncErrors(async (req,res,next)=>{
     }
   
     req.body.images = imagesLinks;
-    // req.body.user = req.user.id;
+    req.body.user = req.user.id;
     const product=await Product.create(req.body);
     res.status(201).json({
         success:true,
